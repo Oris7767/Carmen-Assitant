@@ -1,0 +1,60 @@
+# Cache
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+.DS_Store
+
+# Logs
+*.log
+
+# State (auto-generated)
+rate_limits.json
+authorized.json
+memory/heartbeat-state.json
+
+# Sensitive config
+config_telegram.json
+config_telegram.sh
+subscribers.json
+.env
+
+# Session memory
+memory/
+.memory/
+.openclaw/
+
+# Generated reports
+gold_report_*.md
+
+# YouTube API credentials
+youtube-pipeline/oauth-credentials.json
+youtube-pipeline/oauth-tokens.json
+
+# ElevenLabs API key
+youtube-pipeline/elevenlabs_key.txt
+
+# Render generated token (set via env var on Render)
+.openclaw/
+
+# Node modules at any level
+node_modules/
+
+# Browser automation artifacts
+flow-screenshots/
+*-session/Default/Cache/
+*-session/Default/Service Worker/
+*-session/Default/Code Cache/
+*-session/Default/GPUCache/
+*-session/GraphiteDawnCache/
+
+# Generated video artifacts
+frames/
+*.mp4
+*.jpg
+*.png

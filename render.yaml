@@ -1,0 +1,55 @@
+services:
+  - type: web
+    name: carmen-gateway
+    runtime: docker
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      # ── Gateway Core ────────────────────────────
+      - key: OPENCLAW_GATEWAY_PORT
+        value: "8080"
+      - key: OPENCLAW_STATE_DIR
+        value: /data/.openclaw
+      - key: OPENCLAW_WORKSPACE_DIR
+        value: /data/workspace
+      - key: OPENCLAW_GATEWAY_TOKEN
+        generateValue: true
+
+      # ── Telegram Bot ────────────────────────────
+      - key: CARMEN_TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: CARMEN_TELEGRAM_ADMIN_ID
+        value: "1336718742"
+
+      # ── API Keys (sync:false = manual entry) ────
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: QWEN_API_KEY
+        sync: false
+
+      # ── ElevenLabs TTS ──────────────────────────
+      - key: ELEVENLABS_API_KEY
+        sync: false
+
+      # ── Social Media Sessions ───────────────────
+      - key: X_USERNAME
+        sync: false
+      - key: X_PASSWORD
+        sync: false
+      - key: META_EMAIL
+        sync: false
+      - key: META_PASSWORD
+        sync: false
+      - key: PATREON_EMAIL
+        sync: false
+      - key: PATREON_PASSWORD
+        sync: false
+
+    disk:
+      name: carmen-data
+      mountPath: /data
+      sizeGB: 1

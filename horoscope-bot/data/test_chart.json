@@ -1,0 +1,98 @@
+{
+  "dob": "1991-12-24",
+  "tob": "03:51",
+  "pob": "Saigon",
+  "lagna": {
+    "sign": "Scorpio",
+    "degree": 15.5
+  },
+  "planets": {
+    "Sun": {
+      "sign": "Sagittarius",
+      "degree": 7.5,
+      "nakshatra": "Mula",
+      "house": 2
+    },
+    "Moon": {
+      "sign": "Virgo",
+      "degree": 22.8,
+      "nakshatra": "Hasta",
+      "house": 11
+    },
+    "Mercury": {
+      "sign": "Sagittarius",
+      "degree": 26.8,
+      "nakshatra": "Uttara Ashadha",
+      "house": 2
+    },
+    "Venus": {
+      "sign": "Scorpio",
+      "degree": 10.2,
+      "nakshatra": "Vishakha",
+      "house": 1
+    },
+    "Mars": {
+      "sign": "Virgo",
+      "degree": 3.5,
+      "nakshatra": "Uttara Phalguni",
+      "house": 10
+    },
+    "Jupiter": {
+      "sign": "Virgo",
+      "degree": 14.1,
+      "nakshatra": "Hasta",
+      "house": 11
+    },
+    "Saturn": {
+      "sign": "Aquarius",
+      "degree": 28.2,
+      "nakshatra": "Purva Bhadrapada",
+      "house": 4
+    },
+    "Rahu": {
+      "sign": "Sagittarius",
+      "degree": 5.3,
+      "nakshatra": "Mula",
+      "house": 2
+    },
+    "Ketu": {
+      "sign": "Gemini",
+      "degree": 5.3,
+      "nakshatra": "Mrigashira",
+      "house": 8
+    }
+  },
+  "aspects": [
+    {
+      "planet1": "Sun",
+      "planet2": "Mercury",
+      "type": "conjunction",
+      "orb": 1.5
+    },
+    {
+      "planet1": "Sun",
+      "planet2": "Rahu",
+      "type": "conjunction",
+      "orb": 2.2
+    },
+    {
+      "planet1": "Moon",
+      "planet2": "Jupiter",
+      "type": "conjunction",
+      "orb": 1.3
+    },
+    {
+      "planet1": "Venus",
+      "planet2": "Lagna",
+      "type": "conjunction",
+      "orb": 2.0
+    }
+  ],
+  "topics": [
+    "career",
+    "marriage",
+    "finance",
+    "health",
+    "spirituality"
+  ]
+}

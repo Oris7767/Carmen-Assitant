@@ -1,0 +1,19 @@
+{
+  "channel": "La Bàn Số Mệnh",
+  "channelId": "UCRQTGFyWaXFUOx-2u61SPTw",
+  "startDate": "2026-05-25",
+  "baseline": {
+    "subscribers": 4,
+    "totalViews": 5,
+    "videos": 2,
+    "watchHours": 0
+  },
+  "targets": {
+    "week1": { "endDate": "2026-06-02", "subscribers": 20, "avgViewsPerVideo": 30, "cumulativeViews": 100, "watchHours": 1 },
+    "week2": { "endDate": "2026-06-09", "subscribers": 50, "avgViewsPerVideo": 50, "cumulativeViews": 350, "watchHours": 3 },
+    "week3": { "endDate": "2026-06-16", "subscribers": 100, "avgViewsPerVideo": 80, "cumulativeViews": 900, "watchHours": 8 },
+    "week4": { "endDate": "2026-06-23", "subscribers": 200, "avgViewsPerVideo": 120, "cumulativeViews": 2000, "watchHours": 20 }
+  },
+  "weeklyResults": [],
+  "notes": ""
+}

@@ -1,0 +1,14 @@
+pyTelegramBotAPI>=4.0
+numpy>=1.24
+yfinance>=0.2
+pandas>=2.0
+feedparser
+requests
+pytz>=2023.3
+astral>=3.2
+python-docx
+openpyxl
+python-dotenv>=1.0
+google-genai>=1.0
+flask>=3.0
+six>=1.16

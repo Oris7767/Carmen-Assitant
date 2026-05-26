@@ -1,0 +1,17 @@
+{
+  "name": "youtube-pipeline",
+  "version": "2.0.0",
+  "description": "YouTube Shorts API pipeline — AI image + voice → ffmpeg → upload",
+  "main": "youtube_api.js",
+  "scripts": {
+    "upload": "node youtube_api.js",
+    "auth": "node youtube_auth.js"
+  },
+  "keywords": [],
+  "author": "Carmen AI",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "googleapis": "^148.0.0"
+  }
+}

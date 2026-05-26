@@ -1,0 +1,34 @@
+{
+  "pipeline": "vedic-astrology-weekly",
+  "schedule": "3 posts/week — Tue 09:00, Thu 14:00, Sat 20:00 (GMT+7)",
+  "rules": {
+    "x": "nguyên văn, không thêm bớt, full content + footer",
+    "meta": "rút gọn ≤2,200 ký tự + footer",
+    "footer": "📩 votive@vedicvn.com | 🌍 vedicvn.com | 📞 +84 385448747",
+    "image": "tự generate phù hợp chủ đề"
+  },
+  "content_types": [
+    "planetary_transit",
+    "nakshatra_insight",
+    "vedic_fact",
+    "astronomy_event",
+    "jyotish_tip",
+    "remedy",
+    "muhurta",
+    "quote"
+  ],
+  "posts": [
+    {
+      "id": "001",
+      "date": "2026-05-24",
+      "type": "nakshatra_insight",
+      "title": "Sao Thổ vào Revati Nakshatra — Cuộc Dịch Chuyển Trí Tuệ Vĩ Đại",
+      "x_url": "https://x.com/VotiveAstrology/status/2058235535240597688",
+      "meta": "Đã publish qua business.facebook.com",
+      "content_file": "vedic-post-001-x.md",
+      "meta_file": "vedic-post-001-meta.md",
+      "image": "saturn-revati-2026---6bd24ddb-f9f4-4e0b-b6f2-01d1d54eecc5.jpg",
+      "status": "published"
+    }
+  ]
+}

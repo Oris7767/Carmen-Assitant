@@ -1,0 +1,22 @@
+{
+  "title": "Elon Musk's Philosophy - Stick Figure Edition",
+  "language": "en",
+  "total_scenes": 2,
+  "style_notes": "stick figure style, black on white background, minimalist, simple animation",
+  "scenes": [
+    {
+      "scene": 1,
+      "description": "A stick figure representing Elon Musk stands in front of a complex problem, which then breaks down into simple, fundamental components.",
+      "image_prompt": "minimalist stick figure drawing, black lines on white background, a stick figure (implicitly Elon Musk) standing in a thinking pose next to a large, tangled knot of lines representing a complex problem. Next to it, the knot visually disentangles and breaks down into several small, simple, individual geometric shapes. Analytical, clear breakdown. No text, no words, textless.",
+      "narration": "Elon Musk famously advocates for 'first principles thinking.' Instead of simply following what others have done, he believes we should break down problems to their absolute fundamental truths.",
+      "duration_seconds": 8
+    },
+    {
+      "scene": 2,
+      "description": "The stick figure Musk looks up at a starry sky with planets, and a rocket launches in the background, symbolizing his vision for humanity's future.",
+      "image_prompt": "minimalist stick figure drawing, black lines on white background, a stick figure (implicitly Elon Musk) looking upwards with a determined yet hopeful expression. Above him, a simple starry sky with a stylized moon and Mars is visible. In the background, a minimalist stick figure rocket is launching into space. Visionary, future-focused, optimistic mood. No text, no words, textless.",
+      "narration": "His philosophy also centers on tackling humanity's most significant challenges, from sustainable energy to becoming a multi-planetary species, always pushing the boundaries of what's possible for our future.",
+      "duration_seconds": 9
+    }
+  ]
+}
