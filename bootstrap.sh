@@ -38,7 +38,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
       "token": "${OPENCLAW_GATEWAY_TOKEN}"
     },
     "port": 8080,
-    "bind": "0.0.0.0",
+    "bind": "lan",
     "controlUi": {
       "allowInsecureAuth": true
     }
@@ -122,6 +122,10 @@ if [ -f "$WORKSPACE/youtube-pipeline/package.json" ] && [ ! -d "$WORKSPACE/youtu
     cd "$WORKSPACE/youtube-pipeline" && npm install 2>/dev/null || true
 fi
 
-# ── 4. Start gateway ──
+# ── 4. Fix legacy config if needed ──
+echo "[carmen] Checking config validity..."
+openclaw doctor --fix --yes 2>/dev/null || true
+
+# ── 5. Start gateway ──
 echo "[carmen] Starting OpenClaw Gateway on port ${OPENCLAW_GATEWAY_PORT:-8080}..."
 exec openclaw gateway start
