@@ -128,4 +128,4 @@ openclaw doctor --fix --yes 2>/dev/null || true
 
 # ── 5. Start gateway ──
 echo "[carmen] Starting OpenClaw Gateway on port ${OPENCLAW_GATEWAY_PORT:-8080}..."
-exec openclaw gateway start
+exec openclaw gateway
