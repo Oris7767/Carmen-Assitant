@@ -17,10 +17,10 @@ mkdir -p "$CONFIG_DIR" "$WORKSPACE"
 # ── 1. Initialize workspace from staging (first boot only) ──
 if [ ! -f "$WORKSPACE/MEMORY.md" ] && [ -d "$STAGING" ]; then
     echo "[carmen] First boot — copying workspace from staging..."
-    # Copy everything except Docker/infra files
-    rsync -a --exclude='Dockerfile' --exclude='render.yaml' --exclude='bootstrap.sh' \
-              --exclude='.dockerignore' --exclude='.git' --exclude='RENDER_DEPLOY.md' \
-              "$STAGING/" "$WORKSPACE/"
+    # Copy everything except Docker/infra files & .git
+    cp -r "$STAGING"/* "$WORKSPACE/" 2>/dev/null || true
+    rm -rf "$WORKSPACE/.git" "$WORKSPACE/Dockerfile" "$WORKSPACE/render.yaml" \
+           "$WORKSPACE/bootstrap.sh" "$WORKSPACE/.dockerignore" "$WORKSPACE/RENDER_DEPLOY.md" 2>/dev/null || true
     echo "[carmen] Workspace initialized: $(du -sh $WORKSPACE | cut -f1)"
 else
     echo "[carmen] Workspace already initialized at $WORKSPACE"
