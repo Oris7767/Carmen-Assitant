@@ -17,6 +17,7 @@ from hora_engine import VedicHoraEngine
 from ta_engine import TAEngine
 from astro_engine import AstroEngine
 from carmen_analyst import CarmenAnalyst
+from historical_correlation import HistoricalCorrelation
 
 def get_forex_factory_news():
     import feedparser
@@ -47,9 +48,11 @@ def _get_last_known_price():
     raise RuntimeError("Không lấy được giá vàng — cả yfinance lẫn CSV cache đều fail")
 
 
-def _build_ta_data(market_data, price_for_fib):
-    """Build TA dict from M30 candle data."""
+def _build_ta_data(market_data, price_for_fib, label="M30"):
+    """Build TA dict from candle data (works for any timeframe)."""
     if isinstance(market_data, dict) and "error" in market_data:
+        return None
+    if not isinstance(market_data, list) or len(market_data) < 3:
         return None
     try:
         highs = [x['high'] for x in market_data]
@@ -86,11 +89,17 @@ def _build_ta_data(market_data, price_for_fib):
                 ema = (prices[i] - ema) * multiplier + ema
             return round(ema, 2)
 
-        ema_31 = calc_ema(closes, 31)
-        ema_113 = calc_ema(closes, 113)
-        ema_position = "trên" if price_for_fib > (ema_31 or price_for_fib) else "dưới" if price_for_fib < (ema_31 or price_for_fib) else "ngang"
+        # Use shorter EMA periods for M30, longer for H4
+        if label == "H4":
+            ema_short = calc_ema(closes, 12)
+            ema_long = calc_ema(closes, 26)
+        else:
+            ema_short = calc_ema(closes, 31)
+            ema_long = calc_ema(closes, 113)
 
-        return {
+        ema_position = "trên" if price_for_fib > (ema_short or price_for_fib) else "dưới" if price_for_fib < (ema_short or price_for_fib) else "ngang"
+
+        result = {
             "swing_high": sh,
             "swing_low": sl,
             "trend": trend,
@@ -99,11 +108,18 @@ def _build_ta_data(market_data, price_for_fib):
             "fan_1x1": round(fan_1x1, 2),
             "fan_2x1": round(fan_2x1, 2),
             "fan_3x1": round(fan_3x1, 2),
-            "ema_31": ema_31,
-            "ema_113": ema_113,
+            "ema_short": ema_short,
+            "ema_long": ema_long,
             "ema_position": ema_position,
-            "closes": closes
+            "closes": closes,
+            "timeframe": label
         }
+        # Add EMA cross signal
+        if ema_short and ema_long:
+            result["ema_cross"] = "GOLDEN_CROSS" if ema_short > ema_long else "DEATH_CROSS"
+            result["ema_short"] = ema_short
+            result["ema_long"] = ema_long
+        return result
     except:
         return None
 
@@ -126,6 +142,22 @@ def get_report_data():
     else:
         market_data = ts_data
 
+    # 2b. H4 data — multi-timeframe context
+    #     Twelve Data 4h → yfinance fallback
+    h4_raw = DataFetcher.get_gold_time_series_twelvedata(interval="4h", output=100)
+    if isinstance(h4_raw, dict) and "error" in h4_raw:
+        # yfinance fallback for H4
+        try:
+            import yfinance as yf
+            ticker = yf.Ticker("GC=F")
+            df_h4 = ticker.history(interval="1h", period="10d")
+            if not df_h4.empty:
+                h4_raw = DataFetcher._df_to_candles(df_h4, limit=100)
+            else:
+                h4_raw = []
+        except Exception:
+            h4_raw = []
+
     # Xác định price cuối cùng
     if twelvedata_price is not None:
         price = twelvedata_price
@@ -135,7 +167,14 @@ def get_report_data():
         price = _get_last_known_price()
 
     # Xây TA data với price hiện tại
-    ta_data = _build_ta_data(market_data, price)
+    ta_data = _build_ta_data(market_data, price, label="M30")
+    h4_ta_data = _build_ta_data(h4_raw, price, label="H4") if isinstance(h4_raw, list) and len(h4_raw) >= 3 else None
+
+    # Backward compat: map ema_short/ema_long to ema_31/ema_113 for M30
+    if ta_data:
+        if 'ema_short' in ta_data:
+            ta_data['ema_31'] = ta_data['ema_short']
+            ta_data['ema_113'] = ta_data['ema_long']
 
     # 2. Gann Price & Date
     base_num = GannEngine.extract_base_number(price)
@@ -224,6 +263,7 @@ def get_report_data():
         "current_time": now.strftime("%Y-%m-%d %H:%M:%S"),
         "price": price,
         "ta_data": ta_data,
+        "h4_ta_data": h4_ta_data,
         "gann_base": base_num,
         "gann_resistances": gann_levels['resistances'],
         "gann_supports": gann_levels['supports'],
@@ -253,7 +293,44 @@ def get_full_report_data(include_carmen=True):
         dict with all raw data + carmen_analysis field
     """
     data = get_report_data()
-    
+
+    # ── Compute historical correlation BEFORE Carmen AI (so AI can use it) ──
+    try:
+        hc = HistoricalCorrelation()
+        # Extract moon data for correlation query
+        planets = data.get('vedic_planets', {})
+        moon = planets.get('Moon', {}) if isinstance(planets.get('Moon'), dict) else {}
+        nak = moon.get('nakshatra', '')
+        sign = moon.get('sign', '')
+        ta = data.get('ta_data') or {}
+        vol = 'high' if abs(ta.get('swing_high', 0) - ta.get('swing_low', 0)) > 50 else ('medium' if abs(ta.get('swing_high', 0) - ta.get('swing_low', 0)) > 25 else 'low')
+        trend = ta.get('trend', '')
+        hora_curr = (data.get('hora') or {}).get('hora', '')
+
+        # Parse nakshatra from astro_report if not in planets dict
+        if not nak:
+            import re
+            ar = data.get('astro_report', '')
+            nak_match = re.search(r'—\s*(\w+(?:\s+\w+)?)\s*\(chủ tinh', ar)
+            moon_match = re.search(r'Moon:\s*\S+\s+(\S+(?:\s+\S+)?)\s*\(', ar)
+            if nak_match:
+                nak = nak_match.group(1)
+            if moon_match and not sign:
+                sign = moon_match.group(1)
+
+        corr = hc.correlate(
+            moon_nakshatra=nak,
+            moon_sign=sign,
+            dominant_hora=hora_curr,
+            volatility=vol,
+            trend=trend,
+        )
+        data['correlation_data'] = corr
+        print(f"📊 Correlation: {nak} + {sign} — {corr.get('combined_stats', {}).get('bullish_pct', '?')}% bullish ({corr.get('combined_stats', {}).get('total_days', 0)} days)", file=sys.stderr)
+    except Exception as e:
+        print(f"⚠️ Correlation skipped: {e}", file=sys.stderr)
+        data['correlation_data'] = None
+
     if include_carmen:
         try:
             analyst = CarmenAnalyst()

@@ -52,7 +52,8 @@ class ReportGenerator:
         res_270 = res_list[5]['price'] if len(res_list) > 5 else 0
         
         # ── TA section ──
-        ta_str, action_str = ReportGenerator._build_ta_section(ta, price)
+        h4 = data.get('h4_ta_data')
+        ta_str, action_str = ReportGenerator._build_ta_section(ta, price, h4)
         
         # ── Gann Date section ──
         date_str = ReportGenerator._build_gann_date_section(gann_dates)
@@ -173,8 +174,8 @@ Phân tích được sinh ra bởi hệ thống Algorithmic Trading & Vedic Astr
     # ──────────────────────────────────────────────
     
     @staticmethod
-    def _build_ta_section(ta, price):
-        """Build technical analysis text and action string."""
+    def _build_ta_section(ta, price, h4=None):
+        """Build technical analysis text and action string, with optional H4 context."""
         ta_str = ""
         action_str = ""
         
@@ -202,8 +203,18 @@ Phân tích được sinh ra bởi hệ thống Algorithmic Trading & Vedic Astr
         else:
             fib_status = "Đang test các vùng mở rộng."
             action_str = "Quan sát thêm tín hiệu breakout."
+
+        # Multi-TF context line (brief, for Telegram)
+        tf_note = ""
+        if h4:
+            h4_trend = h4.get('trend', '')
+            if h4_trend == trend:
+                tf_note = f"H4 {h4_trend} + M30 {trend} → đồng pha, tín hiệu mạnh."
+            else:
+                tf_note = f"⚠️ H4 {h4_trend} vs M30 {trend} → xung đột khung, giảm confidence."
         
         ta_str = f"""• Swing High: ${swing_high} | Swing Low: ${swing_low} (Xu hướng M30: {trend})
+• H4 (xu hướng chính): {tf_note if tf_note else 'Không có dữ liệu H4'}
 • Fibonacci (Kim Ssa Custom): {fib_status}
 • Gann Fan: Mốc 1/1 (45°) đang ở ${ta.get('fan_1x1')}, đường 3/1 đang ở ${ta.get('fan_3x1')}.
 • Đánh giá Kỹ thuật: {action_str} Đường Gann Fan 3/1 đang kìm hãm biên độ giá."""
@@ -819,9 +830,56 @@ Nếu giá tăng lên kháng cự Gann 45° (${data.get('gann_resistances', [{}]
         # ─── SECTION 3: TECHNICAL ANALYSIS ───
         lines.append("## 📈 3. PHÂN TÍCH KỸ THUẬT ĐA KHUNG THỜI GIAN")
         lines.append("")
-        
-        # 3a. M30 Analysis
-        lines.append("### ⏱️ Khung M30 (Intraday)")
+
+        # 3a. H4 Analysis (PRIMARY trend — added 2026-05-26)
+        h4 = data.get('h4_ta_data')
+        lines.append("### 🔷 Khung H4 (Xu hướng chính — quyết định BIAS)")
+        lines.append("")
+
+        if h4:
+            h4_trend = h4.get('trend', 'SIDEWAYS')
+            h4_swing_high = h4.get('swing_high', 0)
+            h4_swing_low = h4.get('swing_low', 0)
+            h4_fan_1x1 = h4.get('fan_1x1', 'N/A')
+            h4_fan_2x1 = h4.get('fan_2x1', 'N/A')
+            h4_fan_3x1 = h4.get('fan_3x1', 'N/A')
+            h4_ema_s = h4.get('ema_short')
+            h4_ema_l = h4.get('ema_long')
+            h4_cross = h4.get('ema_cross', '')
+
+            lines.append(f"| Thông số | Giá trị |")
+            lines.append(f"|----------|--------|")
+            lines.append(f"| Xu hướng H4 | {h4_trend} |")
+            lines.append(f"| Swing High H4 | ${h4_swing_high:.1f} |")
+            lines.append(f"| Swing Low H4 | ${h4_swing_low:.1f} |")
+            lines.append(f"| Gann Fan H4 1x1 (45°) | ${h4_fan_1x1} |")
+            lines.append(f"| Gann Fan H4 2x1 | ${h4_fan_2x1} |")
+            lines.append(f"| Gann Fan H4 3x1 | ${h4_fan_3x1} |")
+            if h4_ema_s and h4_ema_l:
+                lines.append(f"| EMA H4 (12/26) | ${h4_ema_s} / ${h4_ema_l} |")
+                cross_label = '🟢 GOLDEN CROSS' if h4_cross == 'GOLDEN_CROSS' else '🔴 DEATH CROSS'
+                lines.append(f"| EMA Signal H4 | {cross_label} |")
+
+            h4_fib = h4.get('fib_analysis', {})
+            h4_below = h4_fib.get('below')
+            h4_above = h4_fib.get('above')
+            if h4_below and h4_above:
+                lines.append(f"| Fibonacci H4 | Giữa {h4_below[0]} (${h4_below[1]:.1f}) và {h4_above[0]} (${h4_above[1]:.1f}) |")
+            elif h4_below:
+                lines.append(f"| Fibonacci H4 | Trên {h4_below[0]} (${h4_below[1]:.1f}) |")
+            elif h4_above:
+                lines.append(f"| Fibonacci H4 | Dưới {h4_above[0]} (${h4_above[1]:.1f}) |")
+
+            # H4 bias indicator
+            h4_bias_emoji = '🟢 BULLISH' if h4_trend == 'UP' else ('🔴 BEARISH' if h4_trend == 'DOWN' else '🟡 SIDEWAYS')
+            lines.append(f"| **→ H4 BIAS** | **{h4_bias_emoji}** |")
+            lines.append("")
+        else:
+            lines.append("⚠️ Chưa đủ dữ liệu H4 — dùng M30 làm primary.")
+            lines.append("")
+
+        # 3b. M30 Analysis
+        lines.append("### ⏱️ Khung M30 (Intraday — định thời ENTRY)")
         lines.append("")
         
         if ta:
@@ -837,7 +895,7 @@ Nếu giá tăng lên kháng cự Gann 45° (${data.get('gann_resistances', [{}]
             
             lines.append(f"| Thông số | Giá trị |")
             lines.append(f"|----------|--------|")
-            lines.append(f"| Xu hướng | {trend} |")
+            lines.append(f"| Xu hướng M30 | {trend} |")
             lines.append(f"| Swing High | ${swing_high:.1f} |")
             lines.append(f"| Swing Low | ${swing_low:.1f} |")
             lines.append(f"| Gann Fan 1x1 (45°) | ${fan_1x1} |")
@@ -852,22 +910,29 @@ Nếu giá tăng lên kháng cự Gann 45° (${data.get('gann_resistances', [{}]
                 lines.append(f"| Fibonacci | Dưới {above[0]} (${above[1]:.1f}) |")
             
             # EMA 31/113
-            ema_31 = ta.get('ema_31')
-            ema_113 = ta.get('ema_113')
+            ema_s = ta.get('ema_short') or ta.get('ema_31')
+            ema_l = ta.get('ema_long') or ta.get('ema_113')
             ema_pos = ta.get('ema_position', 'N/A')
-            if ema_31 and ema_113:
-                bull_ema = ema_31 > ema_113
-                ema_signal = "GOLDEN CROSS (EMA31 > EMA113) = bullish" if bull_ema else "DEATH CROSS (EMA31 < EMA113) = bearish"
-                lines.append(f"| EMA 31 | ${ema_31} |")
-                lines.append(f"| EMA 113 | ${ema_113} |")
-                lines.append(f"| Giá vs EMA 31 | {ema_pos.upper()} |")
-                lines.append(f"| EMA Signal | {ema_signal} |")
+            if ema_s and ema_l:
+                bull_ema = ema_s > ema_l
+                ema_signal = "GOLDEN CROSS = bullish" if bull_ema else "DEATH CROSS = bearish"
+                lines.append(f"| EMA M30 (31/113) | ${ema_s} / ${ema_l} |")
+                lines.append(f"| Giá vs EMA | {ema_pos.upper()} |")
+                lines.append(f"| EMA Signal | {'🟢 ' if bull_ema else '🔴 '}{ema_signal} |")
+
+            # Multi-TF alignment summary
+            if h4:
+                h4_trend = h4.get('trend', '')
+                if h4_trend == trend:
+                    lines.append(f"| ⚡ **TF Alignment** | **H4 {h4_trend} + M30 {trend} = ĐỒNG PHA → tín hiệu mạnh** |")
+                else:
+                    lines.append(f"| ⚠️ **TF Alignment** | **H4 {h4_trend} vs M30 {trend} = XUNG ĐỘT → giảm confidence** |")
             lines.append("")
         else:
             lines.append("Chưa đủ dữ liệu M30 cho phân tích Fibonacci & Gann Fan.")
             lines.append("")
         
-        # 3b. Gann Square of 9
+        # 3c. Gann Square of 9
         lines.append("### 🌀 Gann Square of 9")
         lines.append("")
         lines.append(f"**Trục cơ sở:** {base}")
@@ -885,7 +950,7 @@ Nếu giá tăng lên kháng cự Gann 45° (${data.get('gann_resistances', [{}]
             lines.append(f"{fmt_gann_levels(sup_list)}")
             lines.append("")
         
-        # 3c. Confluence Zones — Fibo near Gann = price magnet
+        # 3d. Confluence Zones — Fibo near Gann = price magnet
         if ta:
             czones = ta.get('confluence_zones', [])
             if czones:
@@ -897,7 +962,7 @@ Nếu giá tăng lên kháng cự Gann 45° (${data.get('gann_resistances', [{}]
                     lines.append(f"  {z['label']} — {'🟢' if z['side'] == 'hỗ trợ' else '🔴'} {z['side']} (cách ${z['diff']:.1f})")
                 lines.append("")
         
-        # 3d. Gann Date Cycles
+        # 3e. Gann Date Cycles
         if gann_dates:
             lines.append("### 📅 Gann Time Cycles")
             lines.append("")

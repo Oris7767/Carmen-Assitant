@@ -62,6 +62,8 @@ SYSTEM_PROMPT = """You are Carmen, a senior trading analyst specializing in Gold
 2. Fibonacci Retracement (Kim Ssa custom levels: 0, 0.2126, 0.5, 0.618, 0.7874, 1, 1.2126, 1.5, 1.618, 1.7874)
 3. Vedic Astrology (sidereal zodiac, nakshatras, planetary hours/hora, aspects, combust analysis)
 4. Macro fundamentals (news, USD pressure, yields)
+5. Multi-Timeframe Analysis (H4 trend + M30 entry timing)
+6. Historical Correlation (4-year patreon-db statistical patterns)
 
 CRITICAL RULES:
 - ALWAYS output valid JSON only. No markdown, no explanations outside JSON.
@@ -74,17 +76,46 @@ CRITICAL RULES:
 - Be specific with price levels — never vague
 - If data is missing or unreliable, set confidence low and explain why
 
+MULTI-TIMEFRAME PRIORITY (H4 > M30):
+- H4 determines PRIMARY BIAS: if H4 trend is UP, BUY signals get higher confidence; if H4 is DOWN, SELL signals get higher confidence
+- M30 determines ENTRY TIMING: wait for M30 pullback to support in H4 uptrend, or M30 rally to resistance in H4 downtrend
+- When H4 and M30 CONTRADICT (e.g. H4 UP but M30 DOWN), reduce confidence by 15-20%. The conflict means choppy/range market.
+- When H4 and M30 ALIGN (both UP or both DOWN), boost confidence by 10-15%. Alignment = stronger signal.
+- H4 EMA cross (12/26) carries more weight than M30 EMA cross (31/113). Golden Cross on H4 = strong bullish bias; Death Cross = strong bearish.
+- H4 Swing High/Low defines the REAL support/resistance. M30 levels are for entry precision.
+- H4 Gann Fan 1x1 direction tells the medium-term trend. If H4 Fan 1x1 is sloping up, prioritize BUY setups.
+
+HISTORICAL CORRELATION USAGE:
+- The "correlation_data" section shows how this exact nakshatra+moon_sign+setup performed historically.
+- nakshatra_stats.bullish_pct: if >60%, increase confidence for BUY bias; if <40%, increase confidence for BEARISH bias
+- combined_stats (same nakshatra + moon sign): strongest historical signal. If 20+ days of data, weight this heavily.
+- exact_matches: similar days in history. Check their close price and direction — does history repeat?
+- baseline.overall_bullish_pct (~48%) is the null hypothesis. If nakshatra bullish_pct is close to 48%, don't overweight it.
+- retro_stats: if a planet is retrograde AND delta_bullish is significant (>5%), factor this into the astro assessment
+- ganm_key_stats: if breached_range is 2x+ held_range, the market is in breakout mode — confidence for directional calls should be HIGHER
+- NEVER blindly follow correlation. Use it to VALIDATE or QUESTION your technical+astro conclusion.
+
 ANALYSIS FRAMEWORK:
-1. Technical: price vs Fibonacci levels, Gann Fan direction, Gann Date proximity, trend strength
-2. Astrological: Moon sign sentiment, Hora energy, key aspects (tight orb <= 8 degrees), combust warnings
-3. Macro: news sentiment, high-impact calendar events
-4. Synthesis: where do technical + astro + macro agree? Where do they conflict?
+1. Multi-TF: H4 primary trend → M30 entry precision. Alignment vs conflict.
+2. Technical: price vs Fibonacci levels, Gann Fan direction, Gann Date proximity, trend strength
+3. Astrological: Moon sign sentiment, Hora energy, key aspects (tight orb <= 8 degrees), combust warnings
+4. Historical: 4-year correlation — what does history say about this exact setup?
+5. Macro: news sentiment, high-impact calendar events
+6. Synthesis: where do Multi-TF + technical + astro + historical + macro agree? Where do they conflict?
 
 CRITICAL — WHEN TO SET HOLD:
 - If confidence < 0.45, ALWAYS set entry.direction = "HOLD"
 - Do NOT force a BUY or SELL with weak conviction. If signals conflict, HOLD is the right call.
 - If bias is NEUTRAL or MIXED, direction must be HOLD (not BUY or SELL)
 - Setting a weak BUY/SELL with R:R < 1:0.5 damages trader trust. Be honest and set HOLD.
+- EXCEPTION: if historical correlation shows >75% bullish for this setup AND H4 trend aligns, you may raise confidence on BUY even if M30 is choppy.
+- EXCEPTION: if historical correlation shows <25% bullish (i.e. >75% bearish) AND H4 trend aligns, you may raise confidence on SELL.
+
+CONFIDENCE CALIBRATION WITH HISTORICAL DATA:
+- High confidence (0.75-1.0): H4 + M30 aligned + nakshatra bull/bear >65% + R:R > 1:2 + no conflicting aspects
+- Medium confidence (0.55-0.74): Most signals align but 1-2 conflicts (e.g., H4 UP but Moon Venus Hora)
+- Low confidence (0.35-0.54): Multiple conflicts between timeframes or between technical & astro
+- Very low (<0.35): Don't trade. Set HOLD.
 
 MACRO_CONTEXT FORMAT:
 The macro_context field must be a detailed, specific Vietnamese analysis as bullet points covering:
@@ -148,22 +179,64 @@ def build_analysis_prompt(data: dict) -> str:
     
     # ── TA DATA ──
     ta = data.get('ta_data')
+    h4 = data.get('h4_ta_data')
+
+    # ── MULTI-TIMEFRAME HEADER ──
+    lines.append(f"\n📊 PHÂN TÍCH ĐA KHUNG THỜI GIAN (H4 + M30):")
+
+    # ── H4 Analysis (primary trend) ──
+    if h4:
+        lines.append(f"\n  🔷 KHUNG H4 (Xu hướng chính — quyết định BIAS):")
+        lines.append(f"  Xu hướng H4: {h4.get('trend', 'N/A')}")
+        lines.append(f"  Swing High H4: ${h4.get('swing_high', 'N/A')} | Swing Low H4: ${h4.get('swing_low', 'N/A')}")
+        h4_fib = h4.get('fib_analysis', {})
+        h4_below = h4_fib.get('below')
+        h4_above = h4_fib.get('above')
+        if h4_below:
+            lines.append(f"  Fibonacci H4 bên dưới: {h4_below[0]} @ ${h4_below[1]}")
+        if h4_above:
+            lines.append(f"  Fibonacci H4 bên trên: {h4_above[0]} @ ${h4_above[1]}")
+        lines.append(f"  Gann Fan H4 1x1: ${h4.get('fan_1x1', 'N/A')} | 3x1: ${h4.get('fan_3x1', 'N/A')}")
+        h4_ema_s = h4.get('ema_short')
+        h4_ema_l = h4.get('ema_long')
+        if h4_ema_s and h4_ema_l:
+            cross = h4.get('ema_cross', '')
+            lines.append(f"  EMA H4: ${h4_ema_s} / ${h4_ema_l} → {cross}")
+        lines.append(f"  → H4 BIAS: {'🟢 BULLISH (tìm BUY trên M30)' if h4.get('trend') == 'UP' else '🔴 BEARISH (tìm SELL trên M30)' if h4.get('trend') == 'DOWN' else '🟡 SIDEWAYS (range-bound)'}")
+    else:
+        lines.append("\n  🔷 KHUNG H4: Không có dữ liệu — dùng M30 làm primary")
+
+    # ── M30 Analysis (entry timing) ──
     if ta:
-        lines.append(f"\n📈 PHÂN TÍCH KỸ THUẬT:")
-        lines.append(f"  Swing High: ${ta.get('swing_high', 'N/A')} | Swing Low: ${ta.get('swing_low', 'N/A')}")
+        lines.append(f"\n  🔸 KHUNG M30 (Định thời — quyết định ENTRY):")
         lines.append(f"  Xu hướng M30: {ta.get('trend', 'N/A')}")
+        lines.append(f"  Swing High M30: ${ta.get('swing_high', 'N/A')} | Swing Low M30: ${ta.get('swing_low', 'N/A')}")
         
         fib_a = ta.get('fib_analysis', {})
         below = fib_a.get('below')
         above = fib_a.get('above')
         if below:
-            lines.append(f"  Fibonacci bên dưới: {below[0]} @ ${below[1]}")
+            lines.append(f"  Fibonacci M30 bên dưới: {below[0]} @ ${below[1]}")
         if above:
-            lines.append(f"  Fibonacci bên trên: {above[0]} @ ${above[1]}")
+            lines.append(f"  Fibonacci M30 bên trên: {above[0]} @ ${above[1]}")
         
-        lines.append(f"  Gann Fan 1x1: ${ta.get('fan_1x1', 'N/A')} | 3x1: ${ta.get('fan_3x1', 'N/A')}")
+        lines.append(f"  Gann Fan M30 1x1: ${ta.get('fan_1x1', 'N/A')} | 3x1: ${ta.get('fan_3x1', 'N/A')}")
+        ema_s = ta.get('ema_short') or ta.get('ema_31')
+        ema_l = ta.get('ema_long') or ta.get('ema_113')
+        if ema_s and ema_l:
+            cross = ta.get('ema_cross') or ('GOLDEN_CROSS' if ema_s > ema_l else 'DEATH_CROSS')
+            lines.append(f"  EMA M30: ${ema_s} / ${ema_l} → {cross}")
+
+        # Multi-TF alignment check
+        if h4:
+            h4_trend = h4.get('trend', '')
+            m30_trend = ta.get('trend', '')
+            if h4_trend == m30_trend:
+                lines.append(f"  ⚡ ALIGNMENT: H4 {h4_trend} + M30 {m30_trend} = TÍN HIỆU MẠNH (boost confidence)")
+            else:
+                lines.append(f"  ⚠️ CONFLICT: H4 {h4_trend} vs M30 {m30_trend} = GIẢM CONFIDENCE (choppy/ranging)")
     else:
-        lines.append("\n📈 PHÂN TÍCH KỸ THUẬT: Không có dữ liệu TA")
+        lines.append("\n  🔸 KHUNG M30: Không có dữ liệu TA")
     
     # ── GANN LEVELS ──
     res = data.get('gann_resistances', [])
@@ -218,6 +291,50 @@ def build_analysis_prompt(data: dict) -> str:
             else:
                 lines.append(f"  {key}: {val}")
     
+    # ── HISTORICAL CORRELATION ──
+    corr = data.get('correlation_data')
+    if corr and not corr.get('error'):
+        lines.append(f"\n📊 CORRELATION LỊCH SỬ (4 NĂM DỮ LIỆU):")
+
+        baseline = corr.get('baseline', {})
+        if baseline:
+            lines.append(f"  Baseline toàn thị trường: {baseline.get('overall_bullish_pct', 50)}% bullish, avg change {baseline.get('overall_avg_change', 0):+.3f}%")
+
+        nak = corr.get('nakshatra_stats')
+        if nak:
+            delta = round(nak['bullish_pct'] - baseline.get('overall_bullish_pct', 50), 1)
+            lines.append(f"  Nakshatra {nak['nakshatra']}: {nak['bullish_pct']}% bullish ({nak['total_days']} ngày) — delta {'+' if delta > 0 else ''}{delta}% vs baseline")
+            lines.append(f"    Avg change: {nak['avg_change_pct']:+.2f}% | Avg range: ${nak['avg_range']:.1f} | Phản ứng phổ biến: {nak.get('dominant_reaction', [['N/A','']])[0][0]}")
+
+        ms = corr.get('moon_sign_stats')
+        if ms:
+            lines.append(f"  Moon {ms['sign']}: {ms['bullish_pct']}% bullish ({ms['total_days']} ngày) | Avg: {ms['avg_change_pct']:+.2f}%")
+
+        combo = corr.get('combined_stats')
+        if combo:
+            lines.append(f"  ⚡ COMBO {nak.get('nakshatra', '?')} + Moon {ms.get('sign', '?')}: **{combo['bullish_pct']}% bullish** ({combo['total_days']} ngày) — {'🟢 STRONG BULLISH' if combo['bullish_pct'] >= 60 else '🔴 STRONG BEARISH' if combo['bullish_pct'] <= 40 else '🟡 NEUTRAL'}")
+
+        retro = corr.get('retro_stats')
+        if retro:
+            sig = [(p, s) for p, s in retro.items() if abs(s['delta_bullish']) >= 3]
+            if sig:
+                lines.append(f"  ℞ Retrograde effects:")
+                for planet, s in sig:
+                    lines.append(f"    {planet} retro: {s['retro_bullish']}% vs direct: {s['direct_bullish']}% (delta {s['delta_bullish']:+.1f}%)")
+
+        matches = corr.get('exact_matches', [])
+        if matches:
+            lines.append(f"  🔍 Top similar days in history:")
+            for m in matches[:3]:
+                lines.append(f"    {m['date']}: ${m['close']:.1f} | {'🟢' if m['bullish'] else '🔴'} {m['change_pct']:+.2f}% | {m.get('volatility', '')} | {m.get('reaction', '')}")
+
+        gk = corr.get('gann_key_stats')
+        if gk:
+            ratio = gk['breached_avg_range'] / max(gk['held_avg_range'], 1)
+            lines.append(f"  🌀 Gann Key: Held range ${gk['held_avg_range']:.1f} vs Breached ${gk['breached_avg_range']:.1f} ({ratio:.1f}x)")
+
+        lines.append(f"  💡 Dùng correlation để VALIDATE hoặc QUESTION kết luận technical + astro.")
+
     # ── MACRO NEWS ──
     macro = data.get('macro_calendar', [])
     if macro and isinstance(macro, list):

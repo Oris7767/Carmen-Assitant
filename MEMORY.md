@@ -478,6 +478,7 @@ File: `patreon-db/.env` — chứa API keys cho X và Instagram (backup). Đã t
 - **Cross-post to X** every video (promo tweet)
 - **Strong hook in first 2 seconds** every video
 - **Reply comments ≤2h**
+- **Upload public** — không unlisted, không cần Kim Ssa review (2026-05-26)
 
 ### Content Pillars
 1. **Daily Transit (60%)** — Mặt Trăng vào nakshatra, góc chiếu hành tinh
@@ -509,3 +510,11 @@ Pipeline Google Flow đã bị xoá toàn bộ do quá phức tạp và không s
 - **Result:** 1.9GB → 720MB (-1.1GB, -60%)
 - **Gitignore:** thêm node_modules, browser cache, frames, *.mp4, *.jpg, *.png patterns
 - **Structure:** patreon-db/ (471MB), video-pipeline/ (247MB, chỉ bot/ giữ lại), engines/ (92KB)
+
+## 🚫 RED LINE: No Autonomous Cross-Posting (2026-05-26)
+Kim Ssa directive: **KHÔNG tự ý làm những thứ không được hướng dẫn.**
+- Auto Patreon → CHỈ Patreon draft. Không X, Meta, Telegram, hay bất kỳ đâu.
+- YouTube Shorts → CHỈ YouTube. Không cross sang X, Meta, Telegram.
+- Telegram broadcast → CHỈ Telegram.
+- Chỉ Hand-Post Pipeline (Kim Ssa gửi bài tay) mới được cross-post đa nền tảng.
+- **Nguyên tắc:** Mỗi pipeline có 1 output channel duy nhất. Không tự ý mở rộng. Không tự ý làm thêm.
