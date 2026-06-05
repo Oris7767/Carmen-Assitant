@@ -1,0 +1,134 @@
+Kết quả đầy đủ đây, Kim Ssa:
+
+---
+
+## 🪐 SL 0.5% | RR 1:2 | LONG ONLY | 18 NĂM (2008–2026)
+
+| Metric | Giá trị |
+|--------|---------|
+| **Vốn ban đầu** | $2,000 |
+| **Vốn cuối** | **$42,715,744** |
+| **Return** | +2,135,687% |
+| **Số lệnh** | 843 (chỉ LONG) |
+| **Win Rate** | 54.1% |
+| **Profit Factor** | **4.55** |
+| **Max DD** | 13.37% |
+| **Sharpe** | **2.71** |
+
+### So sánh với SL ATR
+
+| | SL 0.5% fixed | SL 1.5×ATR |
+|---|---|---|
+| Return | +2.1M% | +69K% |
+| PF | **4.55** | 2.09 |
+| DD | 13.4% | 16.6% |
+| TP hit rate | **46.6%** | 5% |
+| SL hit rate | 43.8% | 15% |
+
+→ SL cố định 0.5% vượt trội hoàn toàn. TP chạm nhiều hơn, PF cao hơn, DD thấp hơn.
+
+---
+
+## 🔬 PATTERN ANALYSIS — Pattern kích hoạt lệnh
+
+### 🌙 Nakshatra (TOP 5 WR)
+
+| Nakshatra | Lệnh | Win Rate |
+|-----------|------|----------|
+| **Chitra** | 35 | **65.7%** 🔥 |
+| Purva Phalguni | 14 | 64.3% |
+| Magha | 23 | 60.9% |
+| Punarvasu | 40 | 60.0% |
+| Shatabhisha | 62 | 59.7% |
+
+### 💀 Nakshatra (TRÁNH)
+
+| Nakshatra | Lệnh | Win Rate |
+|-----------|------|----------|
+| **Hasta** | 18 | **27.8%** ⛔ |
+| Anuradha | 14 | 35.7% |
+| Ardra | 36 | 41.7% |
+
+### 🌙 Moon Sign
+
+| Best | WR | | Worst | WR |
+|------|-----|-|-------|-----|
+| **Leo** | 61.5% | | Scorpio | 42.2% |
+| Libra | 56.9% | | Virgo | 42.5% |
+| Aquarius | 55.6% | | | |
+
+### ⏰ Hora — tất cả gần bằng nhau, không chênh lệch lớn
+
+### 🌓 Moon Phase
+
+| Best | WR | Worst | WR |
+|------|-----|-------|-----|
+| **Full Moon** | 59.6% | Waning Crescent | 45.9% |
+| Last Quarter | 55.5% | New Moon | 45.2% |
+
+### ♀️ Venus × DXY
+
+| Confluence | Lệnh | WR |
+|------------|------|-----|
+| MS × DXY bearish | 520 | 53.7% |
+| ES × DXY bearish | 300 | 49.0% |
+| MS × DXY neutral | 15 | **26.7%** ⛔ |
+
+### 📈 RSI
+
+| Band | Lệnh | WR |
+|------|------|-----|
+| Overbought (>70) | 250 | 53.6% |
+| Strong (50-70) | 376 | 52.7% |
+| Oversold (<30) | 28 | **39.3%** ⛔ |
+
+→ **Không mua khi RSI oversold!** Mua khi RSI strong/overbought tốt hơn hẳn — đúng với bản chất trend-following của hệ thống.
+
+### 🎯 Score Band
+
+| Band | Lệnh | WR |
+|------|------|-----|
+| **Strong LONG (≥6)** | 162 | **59.9%** |
+| LONG (3-6) | 681 | 49.6% |
+
+### 🔺 Top Aspects kích hoạt lệnh
+
+| Aspect | Lệnh | WR | Avg P&L |
+|--------|------|-----|---------|
+| Jupiter Sextile Saturn | 48 | **62.5%** | $15K |
+| Moon Sextile Mercury | 52 | **61.5%** | $4.6K |
+| Mercury Conj Venus | 81 | **60.5%** | $46K |
+| Jupiter Square Rahu/Ketu | 48 | **60.4%** | $11.8K |
+| Sun Conj Mercury | 112 | 56.2% | $23K |
+| Sun Conj Venus | 57 | 57.9% | $45K |
+
+---
+
+### 📊 Theo chế độ thị trường (Regime)
+
+| Giai đoạn | Lệnh | Best Nakshatra | WR |
+|-----------|------|----------------|-----|
+| 2008-2012 Crisis | 227 | Shatabhisha | 68.8% |
+| 2013-2019 Consolidation | 305 | Shatabhisha | 58.3% |
+| **2020-2026 Bull** | 311 | **Swati** | **84.2%** 🔥 |
+
+---
+
+### ⚡ Kết luận nhanh
+
+**Vào lệnh LONG khi:**
+1. Score ≥ 6 (Strong LONG) → WR 60%
+2. Moon sign: Leo, Libra, Aquarius
+3. Nakshatra: Chitra, Purva Phalguni, Magha, Punarvasu, Shatabhisha
+4. Full Moon / Last Quarter
+5. Venus Morning Star + DXY bearish
+6. RSI > 50 (không mua oversold!)
+7. Có aspect: Jupiter Sextile Saturn, Mercury Conj Venus, Moon Sextile Mercury
+
+**Tránh LONG khi:**
+1. Nakshatra: Hasta, Anuradha, Ardra
+2. Moon sign: Scorpio, Virgo
+3. New Moon / Waning Crescent
+4. RSI < 30 (oversold)
+
+Muốn tôi chạy test filter chỉ lấy top pattern (ví dụ: chỉ vào lệnh khi score ≥ 6 + Chitra/Shatabhisha/Magha + Full Moon)?

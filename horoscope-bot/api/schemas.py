@@ -96,3 +96,10 @@ class HealthResponse(BaseModel):
     version: str = "1.0.0"
     chunks_count: int = 0
     index_loaded: bool = False
+
+
+class TaskStatusResponse(BaseModel):
+    status: str
+    pdf_url: str | None = None
+    error: str | None = None
+    chars: int = 0

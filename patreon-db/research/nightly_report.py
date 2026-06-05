@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-nightly_report.py — Carmens Nightly Gold Prediction Report
+nightly_report.py — Aethers Nightly Gold Prediction Report
 
 Chạy mỗi tối sau khi thị trường đóng cửa.
   1. Kéo data giá hôm nay + astro ngày mai
@@ -606,7 +606,7 @@ def render_report(today, tomorrow_date, astro, levels, hora, analysis, macro_not
     lines.append("")
     lines.append("---")
     lines.append("")
-    lines.append(f"*Bản tin dự báo bởi Carmen AI — Astro-Quant Engine v1.0*")
+    lines.append(f"*Bản tin dự báo bởi Aether AI — Astro-Quant Engine v1.0*")
     lines.append(f"*Dữ liệu thiên văn: Vedic API (Lahiri) | Dữ liệu giá: yfinance*")
     lines.append(f"*⚠️ KHÔNG PHẢI LỜI KHUYÊN ĐẦU TƯ. Luôn quản lý rủi ro. Backtest: LONG 78% / SHORT 85% win rate.*")
     

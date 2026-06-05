@@ -52,7 +52,7 @@
 | `moon_sign` | string | Scorpio | Vedic |
 | `moon_degree` | float | 12.8 | |
 | `moon_nakshatra` | string | Jyeshtha | |
-| `moon_nakshatra_lord` | string | Mercury | |
+| `moon_nakshatra_lord` | string | Mercury | Lord/ruler of nakshatra (NEW v2) |
 | `moon_phase` | string | Waning Gibbous | 8-phase: New Moon, Waxing Crescent, First Quarter, Waxing Gibbous, Full Moon, Waning Gibbous, Last Quarter, Waning Crescent |
 | `moon_illumination_pct` | float | 78.7 | Moon illumination 0-100% |
 | `moon_void` | bool | false | Void of course? |
@@ -132,6 +132,19 @@
 | `analysis_notes` | string | [Kim's manual annotation] | Free text — Kim's actual analysis |
 | `setup_quality` | string | A+ | A+ / A / B / C / F — how clean was the setup? |
 
+### G+. TECHNICAL INDICATORS (NEW v2)
+| Column | Type | Example | Notes |
+|--------|------|---------|-------|
+| `gold_volume` | int | 245678 | Trading volume (NEW v2) |
+| `gold_atr_14` | float | 45.2 | Average True Range 14-day (NEW v2) |
+| `gold_rsi_14` | float | 58.3 | RSI 14-day (NEW v2) |
+
+### G++. EXTERNAL CORRELATION DATA (NEW v2)
+| Column | Type | Example | Notes |
+|--------|------|---------|-------|
+| `sp500_change_pct` | float | 0.45 | S&P 500 daily change % (NEW v2) |
+| `vix_close` | float | 18.5 | VIX close (NEW v2) |
+
 ### H. SIMILARITY SCORES (computed at query time, NOT stored)
 These are computed on-the-fly when searching for analogs.
 
@@ -141,7 +154,11 @@ These are computed on-the-fly when searching for analogs.
 ```
 patreon-db/
 ├── SCHEMA.md          ← this file
-├── collect.py         ← auto-collect script
+├── collect.py         ← v1 auto-collect script
+├── collect_v2.py      ← v2 ENHANCED collector (US10Y fix + new columns)
+├── analyze_yearly.py  ← v1 yearly analysis
+├── analyze_v2.py      ← v2 ENHANCED analysis (22 sections)
+├── fix_data.py        ← data patch/fix/audit tool
 ├── search.py          ← similarity search engine
 ├── generate_post.py   ← Patreon post generator
 ├── backfill/          ← backfill tracking

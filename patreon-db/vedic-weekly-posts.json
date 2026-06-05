@@ -29,6 +29,18 @@
       "meta_file": "vedic-post-001-meta.md",
       "image": "saturn-revati-2026---6bd24ddb-f9f4-4e0b-b6f2-01d1d54eecc5.jpg",
       "status": "published"
+    },
+    {
+      "id": "002",
+      "date": "2026-06-02",
+      "type": "planetary_transit",
+      "title": "Jupiter in Cancer Exaltation — Sự Kiện 12 Năm Có 1 Lần",
+      "x_url": "https://x.com/VotiveAstrology/status/1875165253862121496",
+      "meta": "Đã publish qua business.facebook.com",
+      "content_file": "vedic-post-002-x.md",
+      "meta_file": "vedic-post-002-meta.md",
+      "image": "vedic-post-002-jupiter-cancer---03eccb49-e8d9-492b-bb02-0644eb045342.jpg",
+      "status": "published"
     }
   ]
 }

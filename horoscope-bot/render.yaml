@@ -1,0 +1,23 @@
+# 🪐 Votive Astrology Bot — Render Blueprint
+
+services:
+  - type: web
+    name: votive-astrologybot
+    runtime: python
+    repo: https://github.com/Oris7767/votive-astrologybot
+    plan: free
+    region: singapore
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: MIMO_API_KEY
+        sync: false
+      - key: READING_MODEL
+        value: mimo
+      - key: PORT
+        value: 8080
+      - key: HOST
+        value: "0.0.0.0"

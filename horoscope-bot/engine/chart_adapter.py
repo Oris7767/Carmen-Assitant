@@ -9,20 +9,20 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent
 
-# Vedic planet symbols
+# Vedic planet symbols — pure text, no emoji
 PLANET_SYMBOLS = {
-    "SUN": "☀️ Mặt Trời",
-    "MOON": "🌙 Mặt Trăng",
-    "MARS": "♂️ Sao Hỏa",
-    "MERCURY": "☿️ Sao Thủy",
-    "JUPITER": "♃ Sao Mộc",
-    "VENUS": "♀️ Sao Kim",
-    "SATURN": "♄ Sao Thổ",
-    "RAHU": "☊ Rahu",
-    "KETU": "☋ Ketu",
-    "URANUS": "⛢ Sao Thiên Vương",
-    "NEPTUNE": "♆ Sao Hải Vương",
-    "PLUTO": "♇ Sao Diêm Vương",
+    "SUN": "Mặt Trời",
+    "MOON": "Mặt Trăng",
+    "MARS": "Sao Hỏa",
+    "MERCURY": "Sao Thủy",
+    "JUPITER": "Sao Mộc",
+    "VENUS": "Sao Kim",
+    "SATURN": "Sao Thổ",
+    "RAHU": "Rahu",
+    "KETU": "Ketu",
+    "URANUS": "Sao Thiên Vương",
+    "NEPTUNE": "Sao Hải Vương",
+    "PLUTO": "Sao Diêm Vương",
 }
 
 PLANET_ORDER = ["SUN", "MOON", "MARS", "MERCURY", "JUPITER", "VENUS", "SATURN", "RAHU", "KETU", "URANUS", "NEPTUNE", "PLUTO"]
@@ -43,11 +43,11 @@ HOUSE_LABELS = {
 }
 
 ASPECT_SYMBOLS = {
-    "Conjunction": "☌ Giao hội",
-    "Sextile": "⚺ Lục hợp",
-    "Square": "□ Góc vuông",
-    "Trine": "⚹ Tam hợp",
-    "Opposition": "☍ Đối đỉnh",
+    "Conjunction": "Giao hội",
+    "Sextile": "Lục hợp",
+    "Square": "Góc vuông",
+    "Trine": "Tam hợp",
+    "Opposition": "Đối đỉnh",
 }
 
 
@@ -57,7 +57,7 @@ def format_chart_summary(chart_data):
     Returns a formatted string summarizing the entire chart.
     """
     lines = []
-    lines.append("📋 THÔNG TIN LÁ SỐ")
+    lines.append("THÔNG TIN LÁ SỐ")
     lines.append("=" * 60)
     
     meta = chart_data.get("metadata", {})
@@ -70,13 +70,13 @@ def format_chart_summary(chart_data):
     asc = chart_data.get("ascendant", {})
     asc_sign = asc.get("sign", {})
     asc_nak = asc.get("nakshatra", {})
-    lines.append(f"🔼 LAGNA (Cung Mọc)")
+    lines.append(f"LAGNA (Cung Mọc)")
     lines.append(f"  {asc_sign.get('name', '?')} {asc_sign.get('degree', 0)}°{asc_sign.get('minutes', 0)}'")
     lines.append(f"  Nakshatra: {asc_nak.get('name', '?')} - Chủ: {asc_nak.get('lord', '?')} - Pada {asc_nak.get('pada', '?')}")
     lines.append("")
     
     # 2. HOUSES
-    lines.append("🏠 CÁC NHÀ (Houses)")
+    lines.append("CÁC NHÀ")
     for h in chart_data.get("houses", []):
         hnum = h.get("number", "?")
         hsign = h.get("sign", "?")
@@ -89,7 +89,7 @@ def format_chart_summary(chart_data):
     lines.append("")
     
     # 3. PLANETS
-    lines.append("🪐 VỊ TRÍ CÁC HÀNH TINH")
+    lines.append("VỊ TRÍ CÁC HÀNH TINH")
     
     # Sort planets by house number for logical flow
     for pdata in chart_data.get("planets", []):
@@ -98,7 +98,7 @@ def format_chart_summary(chart_data):
         psign = pdata.get("sign", {})
         phouse = pdata.get("house", {})
         pnak = pdata.get("nakshatra", {})
-        retro = " (Nghịch hành 🔄)" if pdata.get("isRetrograde") else ""
+        retro = " (Nghịch hành)" if pdata.get("isRetrograde") else ""
         
         lines.append(f"  {psym}: {psign.get('name','?')} {psign.get('longitude',0)}°{retro}")
         lines.append(f"    Nhà {phouse.get('number','?')} ({phouse.get('sign','?')})")
@@ -119,7 +119,7 @@ def format_chart_summary(chart_data):
     dashas = chart_data.get("dashas", {})
     current = dashas.get("current", {})
     if current:
-        lines.append("⏳ DASHA HIỆN TẠI")
+        lines.append("DASHA HIỆN TẠI")
         cp = current.get("planet", "?")
         cs = PLANET_SYMBOLS.get(cp, cp)
         cd_start = current.get("startDate", "?")[:10]
@@ -140,7 +140,7 @@ def format_chart_summary(chart_data):
     # 5. RETROGRADE PLANETS
     retros = [p for p in chart_data.get("planets", []) if p.get("isRetrograde")]
     if retros:
-        lines.append("🔄 HÀNH TINH NGHỊCH HÀNH")
+        lines.append("HÀNH TINH NGHỊCH HÀNH")
         for r in retros:
             lines.append(f"  {PLANET_SYMBOLS.get(r['planet'], r['planet'])}")
         lines.append("")

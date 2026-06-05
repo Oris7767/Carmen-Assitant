@@ -1,0 +1,8 @@
+{
+  "order_id": "TEST_FIX_FINAL",
+  "task_id": "fd3ff185",
+  "pdf_path": "/root/horoscope-bot/data/pdfs/reading_20260530_124848.pdf",
+  "message": "📄 PDF MOI DA SAN SANG\n\n👤 Khach: Không rõ\n📅 Ngay sinh: 2024-01-01\n⏰ Gio sinh: 12:00\n🆔 Order: TEST_FIX_FINAL\n📎 File: reading_20260530_124848.pdf\n\n🔗 Download: http://horoscope.vedicvn.sbs/reading/pdf/fd3ff185",
+  "notified": true,
+  "telegram_sent": true
+}

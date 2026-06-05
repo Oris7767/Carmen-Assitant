@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """
-Astro-Quant Scoring Engine
-Implements Layer 4 (Dynamic Scoring) of the Astro-Quant Framework.
-Regime-aware scoring with ATR-based weight adjustment.
+research/astro_quant_scorer.py — V1 (DEPRECATED)
+⚠️ REPLACED by astro_quant_scorer_v2.py in parent directory.
+⚠️ V2 uses full 2,511-day dataset (2016-2026) vs V1's 1,103 days (2022-2026).
+⚠️ V2 has 233 data-backed scores vs V1's limited 42 aspects.
+⚠️ V2 SHORT signals: 416 (balanced) vs V1: 20 (bull market only).
+
+Kept for reference only. Use patreon-db/astro_quant_scorer_v2.py for all new work.
 """
 import pandas as pd
 import numpy as np

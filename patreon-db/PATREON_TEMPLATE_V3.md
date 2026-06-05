@@ -1,6 +1,6 @@
 # PATREON POST TEMPLATE — Carmen's Gold Analysis
-# Version: 3.0 (Final)
-# Approved: 2026-05-23 by Kim Ssa
+# Version: 3.1 (Final)
+# Approved: 2026-06 (Kim Ssa) — 10 sections with Super Cycle Countdown
 # 
 # RULES:
 # - NO asterisks (*) anywhere — looks ugly on Patreon
@@ -12,54 +12,64 @@
 # - All data must flow through Astro-Quant 6-Layer Framework
 
 SECTIONS (in order):
-1. Title line: 🔮 CARMEN'S GOLD ANALYSIS — YYYY-MM-DD
-   Subtitle: Moon Sign — Nakshatra | Key Aspects
+1. 📊 TỔNG QUAN & TÍN HIỆU CHÍNH (Executive Summary)
+   - Giá hiện tại, Signal, Confidence
+   - Entry, SL, TP, R:R
+   - Aether's Take
 
-2. 📊 TECHNICAL ANALYSIS — Close [date]
-   - All price data: Open, High, Low, Close, Range, Change%
-   - EMA31, EMA113, relation
-   - DXY with direction
-   - Volatility, Trend direction
+2. 🌍 BỐI CẢNH VĨ MÔ (Macro Context)
+   - Fed, DXY, lạm phát, địa chính trị
+   - Tin tức nổi bật
 
-3. 📐 GANN & FIBONACCI LEVELS
-   - Gann Resistance, Support, nearest S/R
-   - Fib levels (0.5, 0.618, etc.)
-   - Distance between Gann S/R
+3. 📈 PHÂN TÍCH KỸ THUẬT ĐA KHUNG THỜI GIAN (Multi-TF Technical)
+   - H4: Xu hướng chính, Gann Fan, Fibonacci, EMA
+   - M30: Intraday, entry timing
+   - Gann Square of 9: Kháng cự, Hỗ trợ
+   - Confluence Zones (Fibo + Gann)
+   - Gann Time Cycles
 
-4. 🌌 ASTROLOGICAL FRAMEWORK — [date]
-   - Planetary positions table (Vedic/Lahiri)
-   - All 9 planets + Pluto, Uranus, Neptune
-   - Aspect table with orbs and interpretation
-   - Moon Analysis: Nakshatra description + Moon Sign sentiment
+4. 🌌 PHÂN TÍCH CHIÊM TINH VỆ ĐÀ (Vedic Astrology)
+   - Vị trí hành tinh (Sidereal/Lahiri)
+   - Moon Analysis: Nakshatra + Moon Sign
+   - Hora Schedule: cả ngày, best/worst hours
 
-5. 🧬 ASTRO-QUANT 6-LAYER ANALYSIS
-   - Layer 1-2: Raw signals → Classification scoring
-   - Layer 3: Market State (1 of 4 states)
-   - Layer 4: Aspect Impact Analysis
-   - Layer 5-6: Pattern Matching — Historical similar days
+5. 📊 CORRELATION LỊCH SỬ (Historical — 18 năm)
+   - Nakshatra Performance
+   - Moon Sign Stats
+   - Retrograde Effects
+   - Gann Key Level Held vs Breached
+   - Similar Days / RAG patterns
 
-6. ⏰ HORA SCHEDULE — 24H
-   - All 14 hora periods
-   - Best entry windows highlighted
-   - Hours to avoid flagged
-
-7. 💡 TRADING STRATEGY
-   - Signal direction + confidence level
-   - Entry, SL, TP1, TP2, Risk, R:R
-   - Execution plan
-
-8. 📝 CARMEN'S REASONING
+6. 🧠 AETHER AI — PHÂN TÍCH CHUYÊN SÂU (Deep Analysis)
    - Narrative analysis connecting all layers
+   - Bias justification
    - Key risk factors explained
-   - Strategic rationale
 
-9. 🔴 KEY RISKS (numbered list)
+7. 💡 CHIẾN LƯỢC & THỰC THI (Strategy)
+   - Signal + Execution plan
+   - Entry, SL, TP1, TP2
+   - Vùng quan sát (Bullish/Bearish/Neutral)
 
-10. 📍 OBSERVATION ZONES
-    - Bullish, Bearish, Neutral scenarios
+8. 🛡️ MA TRẬN RỦI RO (Risk Matrix)
+   - Kỹ thuật, Chiêm tinh, Sự kiện
+   - Biến động, Confidence
+
+9. 🔭 DỰ BÁO 3-7 NGÀY TỚI (Forward Outlook)
+   - Gann time cycles outlook
+   - Lunar cycle impact
+   - Economic calendar catalyst
+
+10. ⏳ SUPER CYCLE COUNTDOWN — CÒN BAO LÂU ĐẾN ĐỈNH CHU KỲ?
+    - Jupiter-Saturn Master Cycle (~20 năm): phase hiện tại, góc, dead zone
+    - Rahu (North Node): sign, bias, next change
+    - Saturn: sign, volatility, structural resistance
+    - 7-Factor Quant Scorecard (Ju-Sa Phase, Rahu, Saturn, DXY, Conjunction, Trend, Macro)
+    - Tổng điểm + Hành động
+    - Countdown đến Ju-Sa 120° (dead zone) và đỉnh chu kỳ
+    - Dựa trên 40 structural shifts / 18 năm dữ liệu
 
 FOOTER: 
 Bản tin phân tích bởi Carmen AI — Astro-Quant Engine v1.0
 Dữ liệu thiên văn: Vedic / Lahiri Ayanamsa | Giá: yfinance GC=F
-Backtest: 1,103 ngày giao dịch | Win rate: LONG 78% / SHORT 85%
+Backtest: 4,629 trading days (2008-2026) | Super Cycle Framework v2.0
 ⚠️ KHÔNG PHẢI LỜI KHUYÊN ĐẦU TƯ. Luôn tự quản lý rủi ro.

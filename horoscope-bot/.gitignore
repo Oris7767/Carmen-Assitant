@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Environment
+.env
+.env.local
+!.env.example
+
+# Raw corpus (PDFs, DOCX — too large, only need processed chunks)
+corpus/raw/*.pdf
+corpus/raw/*.docx
+corpus/raw/*.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Render
+# render.yaml — tracked for deploy config
